@@ -7,7 +7,7 @@ def save_from_url(url, file_name):
     with open(file_name, 'wb') as handler:
         handler.write(img_data)
 
-def get_image_from_prompt(openai_client, prompt, model="dall-e-3"):
+def get_image_from_prompt(prompt, openai_client, model="dall-e-3"):
     response = openai_client.images.generate(prompt=prompt, model=model)
     # Looks like
     # ImagesResponse(

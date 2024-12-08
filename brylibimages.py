@@ -76,6 +76,7 @@ def get_info_about_images(
 
     ret_vals = []
     for tool_call in tool_calls:
-        ret_vals.append({"func_name":tool_call.function.name, "func_args":tool_call.function.arguments})
+        func_args = json.loads(tool_call.function.arguments)
+        ret_vals.append({"func_name":tool_call.function.name, "func_args":func_args})
 
     return ret_vals

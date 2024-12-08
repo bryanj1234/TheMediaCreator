@@ -18,14 +18,20 @@ def get_default_question_answer_structure():
         "parameters": {
             "type": "object",
             "properties": {
-                "my_prompt": {
-                    "type": "string"
+                "my_prompts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                 },
-                "your_answer": {
-                    "type": "string"
-                },
+                "your_answers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                }
             },
-            "required": ["my_prompt", "your_answer"]
+            "required": ["my_prompts", "your_answers"]
         }
     }
 
@@ -47,6 +53,6 @@ def get_multipart_question_answer_structure():
                     }
                 }
             },
-            "required": ["my_prompt", "your_answer"]
+            "required": ["your_tasks", "my_prompt", "your_answer"]
         }
     }

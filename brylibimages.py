@@ -1,7 +1,7 @@
-from openai import OpenAI
+import brylibopenai as bloai
 import requests
 import base64
-
+from pprint import pprint
 
 def save_from_url(url, file_name):
     img_data = requests.get(url).content
@@ -32,31 +32,61 @@ def base64_encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
-def get_text_from_image(openai_client, url=None, file_name=None, model="dall-e-3"):
-    if (url is None and file_name is None) or (url is not None and file_name is not None):
-        raise ValueError("Must set exactly one of url or file_name")
-
-    if file_name is not None:
-        base64_image = base64_encode_image(file_name)
-        url = f"data:image/jpeg;base64,{base64_image}"
-        
-    response = openai_client.chat.completions.create(
+def get_information_about_one_or_more_images(
+        prompt,
+        openai_client,
+        urls=None,
+        file_names=None,
         model="gpt-4o-mini",
+        answer_structure_function=None
+):
+    if urls is None and file_names is None:
+        raise ValueError("Must set at least one of url or file_name")
+
+    if urls is None:
+        urls = []
+
+    if file_names is not None:
+        for file_name in file_names:
+            base64_image = base64_encode_image(file_name)
+            urls.append(f"data:image/jpeg;base64,{base64_image}")
+
+    user_content = [{"type": "text", "text": prompt}]
+    for url in urls:
+        img_info = {
+            "type": "image_url",
+            "image_url": {
+                "url": url,
+            },
+        }
+        user_content.append(img_info)
+
+    if answer_structure_function is None:
+        answer_structure_function = bloai.get_default_question_answer_structure()
+
+    tools = [
+        {
+            "type": "function",
+            "function": answer_structure_function,
+        }
+    ]
+
+    response = openai_client.chat.completions.create(
+        model=model,
         messages=[
             {
                 "role": "user",
-                "content": [
-                    {"type": "text", "text": "What’s in this image?"},
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": url,
-                        },
-                    },
-                ],
+                "content": user_content,
             }
         ],
+        tools=tools,
         max_tokens=300,
     )
 
-    print(response.choices[0])
+    tool_calls = response.choices[0].message.tool_calls
+
+    ret_vals = []
+    for tool_call in tool_calls:
+        ret_vals.append({"func_name":tool_call.function.name, "func_args":tool_call.function.arguments})
+
+    return ret_vals

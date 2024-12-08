@@ -1,5 +1,6 @@
 import brylibopenai as bloai
 import brylibimages as blim
+from pprint import pprint
 
 OPENAI_api_key = open(r"C:\Users\Bryan\Documents\_API_KEYS\TheMediaCreator 2024").read().strip()
 OPENAI_org_id = open(r"C:\Users\Bryan\Documents\_API_KEYS\OpenAI_Org_ID").read().strip()
@@ -17,10 +18,13 @@ openai_client = bloai.get_open_ai_client(OPENAI_api_key, OPENAI_org_id)
 # file_name = "images/the_image_4.jpg"
 # blim.save_from_url(url, file_name)
 
-# Get text from image
+# Get text from image ==========================================================
 
-# url = "https://t4.ftcdn.net/jpg/02/72/51/17/360_F_272511766_sI572Qc9PrDowwVQKu8UXTxVk1aEdccM.jpg"
-# blim.get_text_from_image(openai_client, url=url)
+file_names = ["images/the_image_4.jpg"]
+urls = ["https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"]
 
-file_name = "images/the_image_4.jpg"
-blim.get_text_from_image(openai_client, file_name=file_name)
+prompt = "Please complete the following three tasks. Return three function calls, one for each task. 1) Answer the question \"How many images did I send you?\" 2) Please describe each image sent, and return the results as a list of strings. 3) Please compare each pair of images and describe the similarities and differences for each pair."
+
+ret_vals = blim.get_information_about_one_or_more_images(prompt, openai_client, urls=urls, file_names=file_names)
+# pprint(ret_vals, indent=2)
+pprint(ret_vals)

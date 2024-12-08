@@ -14,22 +14,27 @@ See:
 * COMPLETED: ~~Sketch of images from text~~
   * `brylibimages.get_image_from_prompt(prompt)`
 * COMPLETED: ~~Sketch of getting text from images.~~
-  * `brylibimages.get_info_about_images_using_functions(prompt)`
-  * `brylibimages.get_info_about_images_using_response_format(prompt)`
+  * `brylibimages.get_info_about_images(prompt)`
 
-### Movies from text
+### Videos from text
 
 * Generate images from text
   * Figure out the best way to get text to feed to `brylibimages.get_image_from_prompt`
 * Use images + text to make stories
 * Use stories + images to make movies
 
-### Movies from images
+### Videos from images
 
 * Take a few images
 * Get texts from the images
 * Take the texts and combine into story
 * Make movie
+
+### Optimizing text for a given purpose
+
+### Optimizing images for a given purpose
+
+### Optimizing videos for a given purpose
 
 ## Completed
 

@@ -14,8 +14,8 @@ See:
 * COMPLETED: ~~Sketch of images from text~~
   * `brylibimages.get_image_from_prompt(prompt)`
 * COMPLETED: ~~Sketch of getting text from images.~~
-  * `brylibimages.get_information_about_one_or_more_images_using_functions(prompt)`
-  * `brylibimages.get_information_about_one_or_more_images_using_response_formatting(prompt)`
+  * `brylibimages.get_info_about_images_using_functions(prompt)`
+  * `brylibimages.get_info_about_images_using_response_format(prompt)`
 
 ### Movies from text
 

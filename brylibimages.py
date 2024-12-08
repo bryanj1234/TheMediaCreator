@@ -32,7 +32,7 @@ def base64_encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
-def get_information_about_one_or_more_images_using_functions(
+def get_info_about_images_using_functions(
         prompt,
         openai_client,
         urls=None,
@@ -91,7 +91,7 @@ def get_information_about_one_or_more_images_using_functions(
 
     return ret_vals
 
-def get_information_about_one_or_more_images_using_response_formatting(
+def get_info_about_images_using_response_format(
         prompt,
         openai_client,
         urls=None,

@@ -1,7 +1,7 @@
 import brylibopenai as bloai
 import requests
 import base64
-from pprint import pprint
+import json
 
 def save_from_url(url, file_name):
     img_data = requests.get(url).content
@@ -32,7 +32,7 @@ def base64_encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
-def get_information_about_one_or_more_images(
+def get_information_about_one_or_more_images_using_functions(
         prompt,
         openai_client,
         urls=None,
@@ -88,5 +88,54 @@ def get_information_about_one_or_more_images(
     ret_vals = []
     for tool_call in tool_calls:
         ret_vals.append({"func_name":tool_call.function.name, "func_args":tool_call.function.arguments})
+
+    return ret_vals
+
+def get_information_about_one_or_more_images_using_response_formatting(
+        prompt,
+        openai_client,
+        urls=None,
+        file_names=None,
+        model="gpt-4o-mini",
+        response_format=None
+):
+    if urls is None and file_names is None:
+        raise ValueError("Must set at least one of url or file_name")
+
+    if urls is None:
+        urls = []
+
+    if file_names is not None:
+        for file_name in file_names:
+            base64_image = base64_encode_image(file_name)
+            urls.append(f"data:image/jpeg;base64,{base64_image}")
+
+    user_content = [{"type": "text", "text": prompt}]
+    for url in urls:
+        img_info = {
+            "type": "image_url",
+            "image_url": {
+                "url": url,
+            },
+        }
+        user_content.append(img_info)
+
+    if response_format is None:
+        response_format = bloai.get_default_response_format()
+
+    response = openai_client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": user_content,
+            }
+        ],
+        response_format=response_format,
+        max_tokens=300,
+    )
+
+    json_resp = response.choices[0].message.content
+    ret_vals = json.loads(json_resp)
 
     return ret_vals

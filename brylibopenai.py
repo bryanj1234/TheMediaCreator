@@ -7,6 +7,36 @@ from openai import OpenAI
 def get_open_ai_client(api_key, org_id):
     return OpenAI(api_key=api_key, organization=org_id)
 
+
+################################################################################
+# Respopnse formats for controlling responses =====================
+################################################################################
+
+def get_default_response_format():
+    return {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "default_response_format_schema",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "your_tasks": {
+                        "type": "string",
+                        "items": {
+                            "my_prompt": {
+                                "type": "string"
+                            },
+                            "your_answer": {
+                                "type": "string"
+                            },
+                        }
+                    }
+                },
+                "required": ["your_tasks", "my_prompt", "your_answer"]
+            }
+        }
+    }
+
 ################################################################################
 # Function signature definitions for controlling responses =====================
 ################################################################################
@@ -27,3 +57,4 @@ def get_default_question_answer_structure():
             "required": ["my_prompt", "your_answer"]
         }
     }
+

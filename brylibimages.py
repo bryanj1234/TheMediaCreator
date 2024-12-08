@@ -1,7 +1,7 @@
-import brylibopenai as bloai
 import requests
 import base64
 import json
+import brylibprompt as blp
 
 def save_from_url(url, file_name):
     img_data = requests.get(url).content
@@ -51,32 +51,47 @@ def get_info_about_images(
         user_content.append(img_info)
 
     if answer_struct_func is None:
-        answer_struct_func = bloai.get_default_question_answer_structure
-
-    tools = [
-        {
-            "type": "function",
-            "function": answer_struct_func(),
-        }
-    ]
-
-    response = openai_client.chat.completions.create(
-        model=model,
-        messages=[
+        # Return JSON.
+        # Presumably you found some other way to control the response,
+        # maybe by using a well-structured prompt.
+        response = openai_client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": user_content,
+                }
+            ],
+            response_format= {
+                "type": "json_object",
+            },
+            max_tokens=300,
+        )
+        return json.loads(response.choices[0].message.content)
+    else:
+        # You are using answer_struct_func to control the response.
+        tools = [
             {
-                "role": "user",
-                "content": user_content,
+                "type": "function",
+                "function": answer_struct_func(),
             }
-        ],
-        tools=tools,
-        max_tokens=300,
-    )
-
-    tool_calls = response.choices[0].message.tool_calls
-
-    ret_vals = []
-    for tool_call in tool_calls:
-        func_args = json.loads(tool_call.function.arguments)
-        ret_vals.append({"func_name":tool_call.function.name, "func_args":func_args})
-
-    return ret_vals
+        ]
+        response = openai_client.chat.completions.create(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": user_content,
+                }
+            ],
+            tools=tools,
+            max_tokens=300,
+        )
+        print(response.choices[0].message)
+        exit()
+        tool_calls = response.choices[0].message.tool_calls
+        ret_vals = []
+        for tool_call in tool_calls:
+            func_args = json.loads(tool_call.function.arguments)
+            ret_vals.append({"func_name":tool_call.function.name, "func_args":func_args})
+        return ret_vals

@@ -21,7 +21,7 @@ def get_default_response_format():
                 "type": "object",
                 "properties": {
                     "your_tasks": {
-                        "type": "string",
+                        "type": "array",
                         "items": {
                             "my_prompt": {
                                 "type": "string"

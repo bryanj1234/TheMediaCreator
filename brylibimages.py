@@ -136,6 +136,6 @@ def get_info_about_images_using_response_format(
     )
 
     json_resp = response.choices[0].message.content
-    ret_vals = json.loads(json_resp)
+    ret_vals = json.loads(json_resp)["your_tasks"]
 
     return ret_vals

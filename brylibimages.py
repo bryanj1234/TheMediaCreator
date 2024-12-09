@@ -87,11 +87,6 @@ def get_info_about_images(
             tools=tools,
             max_tokens=300,
         )
-        print(response.choices[0].message)
-        exit()
-        tool_calls = response.choices[0].message.tool_calls
-        ret_vals = []
-        for tool_call in tool_calls:
-            func_args = json.loads(tool_call.function.arguments)
-            ret_vals.append({"func_name":tool_call.function.name, "func_args":func_args})
+
+        ret_vals = blp.extract_and_reassemble_fragmented_func_results(response.choices[0].message.tool_calls)
         return ret_vals

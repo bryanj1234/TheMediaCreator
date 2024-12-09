@@ -25,14 +25,14 @@ file_names = ["images/the_image_4.jpg"]
 urls = ["https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"]
 prompt_list = [
     "How many images did I send you?",
-    "Please describe each image sent, and return the results as a list of strings.",
-    "Please compare each pair of images and describe the similarities and differences for each pair.",
-    "What is a good way to combine these images?",
-    "Can you make a story based on these two images?",
-    "How would you imagine the temperature of these images?"
+    #"Please describe each image sent, and return the results as a list of strings.",
+    # "Please compare each pair of images and describe the similarities and differences for each pair.",
+    # "What is a good way to combine these images?",
+    # "Can you make a story based on these two images?",
+    # "How would you imagine the temperature of these images?"
 ]
 
-response_formatter_class = blpands.GenericResponseStructure
+response_structure_class = blpands.GenericResponseStructure
 prompt = blpands.generic_prompts_list_to_prompt(prompt_list)
 
 print("====================================================================================")
@@ -40,7 +40,7 @@ print(prompt)
 print("====================================================================================")
 
 
-ret_vals = blim.get_info_about_images(prompt, response_formatter_class, openai_client, urls=urls, file_names=file_names)
+ret_vals = blim.get_info_about_images(prompt, response_structure_class, openai_client, urls=urls, file_names=file_names)
 
 print("====================================================================================")
 pprint(ret_vals)

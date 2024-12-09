@@ -22,7 +22,7 @@ def base64_encode_image(image_path):
 
 def get_info_about_images(
         prompt,
-        response_formatter_class,
+        response_structure_class,
         openai_client,
         urls=None,
         file_names=None,
@@ -30,8 +30,8 @@ def get_info_about_images(
 ):
     if urls is None and file_names is None:
         raise ValueError("Must set at least one of url or file_name")
-    if response_formatter_class is None:
-        raise ValueError("Must set response_formatter_class")
+    if response_structure_class is None:
+        raise ValueError("Must set response_structure_class")
 
     if urls is None:
         urls = []
@@ -57,7 +57,7 @@ def get_info_about_images(
             {"role": "user",
              "content": user_content},
         ],
-        response_format=response_formatter_class,
+        response_format=response_structure_class,
     )
     ret_vals = completion.choices[0].message.parsed
 

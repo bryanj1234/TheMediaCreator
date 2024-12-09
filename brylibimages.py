@@ -30,6 +30,8 @@ def get_info_about_images(
 ):
     if urls is None and file_names is None:
         raise ValueError("Must set at least one of url or file_name")
+    if response_formatter_class is None:
+        raise ValueError("Must set response_formatter_class")
 
     if urls is None:
         urls = []

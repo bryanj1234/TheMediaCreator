@@ -15,7 +15,7 @@ See:
   * `brylibimages.get_image_from_prompt(prompt)`
 * COMPLETED: ~~Sketch of getting text from images.~~
   * `brylibimages.get_info_about_images(prompt)`
-* IN-PROGRESS: Prompt engineering and Response structuring
+* COMPLETED: ~~Sketch of Prompt engineering and Response structuring~~
 
 ### Videos from text
 

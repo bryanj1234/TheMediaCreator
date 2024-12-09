@@ -32,7 +32,7 @@ prompt_list = [
     # "How would you imagine the temperature of these images?"
 ]
 
-response_structure_class = blpands.GenericResponseStructure
+structured_output_class = blpands.GenericResponseStructure
 prompt = blpands.generic_prompts_list_to_prompt(prompt_list)
 
 print("====================================================================================")
@@ -40,7 +40,7 @@ print(prompt)
 print("====================================================================================")
 
 
-ret_vals = blim.get_info_about_images(prompt, response_structure_class, openai_client, urls=urls, file_names=file_names)
+ret_vals = blim.get_info_about_images(prompt, structured_output_class, openai_client, urls=urls, file_names=file_names)
 
 print("====================================================================================")
 pprint(ret_vals)

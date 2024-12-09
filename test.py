@@ -1,6 +1,7 @@
 import brylibopenai as bloai
 import brylibimages as blim
 import brylibprompt as blp
+from pprint import pprint
 import json
 
 OPENAI_api_key = open(r"C:\Users\Bryan\Documents\_API_KEYS\TheMediaCreator 2024").read().strip()
@@ -33,9 +34,18 @@ prompt_list = [
     "Can you make a story based on these two images?",
     "How would you imagine the temperature of these images?"
 ]
-prompt, answer_struct_func = blp.create_function_and_prompt_from_prompt_list(prompt_list)
-ret_vals = blim.get_info_about_images(prompt, openai_client, answer_struct_func=answer_struct_func, urls=urls, file_names=file_names)
-print(ret_vals)
+prompt = blp.create_generic_prompt_from_prompt_list(prompt_list)
+
+print("====================================================================================")
+print(prompt)
+print("====================================================================================")
+
+
+ret_vals = blim.get_info_about_images(prompt, openai_client, urls=urls, file_names=file_names)
+
+print("====================================================================================")
+pprint(ret_vals, indent=2)
+print("====================================================================================")
 
 # Get text from text ===========================================================
 

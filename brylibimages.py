@@ -26,14 +26,10 @@ def get_info_about_images(
         openai_client,
         urls=None,
         file_names=None,
-        model="gpt-4o-mini",
-        answer_struct_func=None
+        model="gpt-4o-mini"
 ):
     if urls is None and file_names is None:
         raise ValueError("Must set at least one of url or file_name")
-
-    if answer_struct_func is None:
-        raise ValueError("Must set answer_struct_func")
 
     if urls is None:
         urls = []
@@ -53,24 +49,15 @@ def get_info_about_images(
         }
         user_content.append(img_info)
 
-    # You are using answer_struct_func to control the response.
-    tools = [
-        {
-            "type": "function",
-            "function": answer_struct_func(),
-        }
-    ]
-    response = openai_client.chat.completions.create(
+    completion = openai_client.beta.chat.completions.parse(
         model=model,
         messages=[
-            {
-                "role": "user",
-                "content": user_content,
-            }
+            {"role": "user",
+             "content": user_content},
         ],
-        tools=tools,
-        max_tokens=300,
+        response_format=blp.GenericQuestionResponseStructure,
     )
+    ret_vals = completion.choices[0].message.parsed
 
-    ret_vals = blp.extract_and_reassemble_fragmented_func_results(response.choices[0].message.tool_calls)
     return ret_vals
+

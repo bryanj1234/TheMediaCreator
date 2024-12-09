@@ -42,10 +42,6 @@ def create_function_and_prompt_from_prompt_list(prompt_list):
     arg_props = {}
     required_props = []
 
-    # Metadata
-    # arg_props["initial_prompt"] = {"type": "string"}
-    # required_props.append("initial_prompt")
-
     ii = 0
     for _ in prompt_list:
         ii += 1
@@ -80,6 +76,7 @@ def generate_function_signature(arg_props, required_props, func_name="anonymous_
         "parameters": {
             "type": "object",
             "properties": arg_props,
+            "additionalProperties": False,
             "required": required_props
         }
     }

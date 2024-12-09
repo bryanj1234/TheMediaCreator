@@ -23,7 +23,6 @@ openai_client = bloai.get_open_ai_client(OPENAI_api_key, OPENAI_org_id)
 
 file_names = ["images/the_image_4.jpg"]
 urls = ["https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"]
-
 # prompt_list = [
 #     "How many images did I send you?",
 #     "Please describe each image sent, and return the results as a list of strings.",
@@ -34,13 +33,11 @@ prompt_list = [
     "Can you make a story based on these two images?",
     "How would you imagine the temperature of these images?"
 ]
-
 prompt, answer_struct_func = blp.create_function_and_prompt_from_prompt_list(prompt_list)
-
-# print(answer_struct_func())
-# exit()
-
 ret_vals = blim.get_info_about_images(prompt, openai_client, answer_struct_func=answer_struct_func, urls=urls, file_names=file_names)
-
 print(ret_vals)
+
+# Get text from text ===========================================================
+
+
 

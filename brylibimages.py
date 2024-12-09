@@ -32,6 +32,9 @@ def get_info_about_images(
     if urls is None and file_names is None:
         raise ValueError("Must set at least one of url or file_name")
 
+    if answer_struct_func is None:
+        raise ValueError("Must set answer_struct_func")
+
     if urls is None:
         urls = []
 
@@ -50,43 +53,24 @@ def get_info_about_images(
         }
         user_content.append(img_info)
 
-    if answer_struct_func is None:
-        # Return JSON.
-        # Presumably you found some other way to control the response,
-        # maybe by using a well-structured prompt.
-        response = openai_client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": user_content,
-                }
-            ],
-            response_format= {
-                "type": "json_object",
-            },
-            max_tokens=300,
-        )
-        return json.loads(response.choices[0].message.content)
-    else:
-        # You are using answer_struct_func to control the response.
-        tools = [
+    # You are using answer_struct_func to control the response.
+    tools = [
+        {
+            "type": "function",
+            "function": answer_struct_func(),
+        }
+    ]
+    response = openai_client.chat.completions.create(
+        model=model,
+        messages=[
             {
-                "type": "function",
-                "function": answer_struct_func(),
+                "role": "user",
+                "content": user_content,
             }
-        ]
-        response = openai_client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": user_content,
-                }
-            ],
-            tools=tools,
-            max_tokens=300,
-        )
+        ],
+        tools=tools,
+        max_tokens=300,
+    )
 
-        ret_vals = blp.extract_and_reassemble_fragmented_func_results(response.choices[0].message.tool_calls)
-        return ret_vals
+    ret_vals = blp.extract_and_reassemble_fragmented_func_results(response.choices[0].message.tool_calls)
+    return ret_vals

@@ -1,8 +1,7 @@
 import brylibopenai as bloai
 import brylibimages as blim
-import brylibprompt as blp
+import brylibpromptandstructure as blpands
 from pprint import pprint
-import json
 
 OPENAI_api_key = open(r"C:\Users\Bryan\Documents\_API_KEYS\TheMediaCreator 2024").read().strip()
 OPENAI_org_id = open(r"C:\Users\Bryan\Documents\_API_KEYS\OpenAI_Org_ID").read().strip()
@@ -24,27 +23,27 @@ openai_client = bloai.get_open_ai_client(OPENAI_api_key, OPENAI_org_id)
 
 file_names = ["images/the_image_4.jpg"]
 urls = ["https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"]
-# prompt_list = [
-#     "How many images did I send you?",
-#     "Please describe each image sent, and return the results as a list of strings.",
-#     "Please compare each pair of images and describe the similarities and differences for each pair."
-# ]
 prompt_list = [
+    "How many images did I send you?",
+    "Please describe each image sent, and return the results as a list of strings.",
+    "Please compare each pair of images and describe the similarities and differences for each pair.",
     "What is a good way to combine these images?",
     "Can you make a story based on these two images?",
     "How would you imagine the temperature of these images?"
 ]
-prompt = blp.create_generic_prompt_from_prompt_list(prompt_list)
+
+response_formatter_class = blpands.GenericResponseStructure
+prompt = blpands.generic_prompts_list_to_prompt(prompt_list)
 
 print("====================================================================================")
 print(prompt)
 print("====================================================================================")
 
 
-ret_vals = blim.get_info_about_images(prompt, openai_client, urls=urls, file_names=file_names)
+ret_vals = blim.get_info_about_images(prompt, response_formatter_class, openai_client, urls=urls, file_names=file_names)
 
 print("====================================================================================")
-pprint(ret_vals, indent=2)
+pprint(ret_vals)
 print("====================================================================================")
 
 # Get text from text ===========================================================

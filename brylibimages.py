@@ -1,7 +1,6 @@
 import requests
 import base64
-import json
-import brylibprompt as blp
+import brylibpromptandstructure as blpands
 
 def save_from_url(url, file_name):
     img_data = requests.get(url).content
@@ -23,6 +22,7 @@ def base64_encode_image(image_path):
 
 def get_info_about_images(
         prompt,
+        response_formatter_class,
         openai_client,
         urls=None,
         file_names=None,
@@ -55,7 +55,7 @@ def get_info_about_images(
             {"role": "user",
              "content": user_content},
         ],
-        response_format=blp.GenericQuestionResponseStructure,
+        response_format=response_formatter_class,
     )
     ret_vals = completion.choices[0].message.parsed
 

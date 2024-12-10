@@ -28,8 +28,20 @@ class GenericResponseStructure(BaseModel):
     added_prompt_explanation: str
     additional_information: str
 
-def generic_prompts_list_to_prompt(prompt_list):
-    final_prompt = "I am going to instruct you to perform one or more tasks. "
+def generic_prompts_list_to_prompt(prompt_list, context_list=[]):
+    context_prompt = ""
+    if (len(context_list) > 0):
+        context_prompt = "Here is the context you have to start with:\n\n"
+        ii = 0
+        for context_item in context_list:
+            ii += 1
+            c_id = "context_item_ " + chr(64 + ii)
+            context_prompt += "\t" + c_id + " : " + context_item + "\n"
+        context_list += "\n"
+
+    final_prompt = context_prompt
+    final_prompt += "\n"
+    final_prompt += "I am now going to instruct you to perform one or more tasks. "
     final_prompt += "These tasks are expressed in the following list, where each item begins with a task identifier which has the form prompt_1, prompt_2, prompt_3, etc., followed by a colon ':' character."
     final_prompt += "\n\nHere is the list of tasks:\n\n"
 

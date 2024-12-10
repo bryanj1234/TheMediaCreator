@@ -19,8 +19,10 @@ See:
 
 ## Completed
 
-* COMPLETED: Sketch of images from text
-  * `brylibimages.get_image_from_prompt(prompt)`
+* COMPLETED: Sketch of getting text from text.
+  * `brylibtext.get_text_from_text(prompt)`
 * COMPLETED: Sketch of getting text from images.
-  * `brylibimages.get_info_about_images(prompt)`
+  * `brylibimages.get_text_from_images(prompt)`
+* COMPLETED: Sketch of images from text
+  * `brylibimages.get_image_from_text(prompt)`
 * COMPLETED: Sketch of Prompt engineering and Response structuring

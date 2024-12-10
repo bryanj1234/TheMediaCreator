@@ -4,6 +4,7 @@ See:
   * https://platform.openai.com/docs/guides/text-generation
   * https://platform.openai.com/docs/guides/structured-outputs
   * https://cookbook.openai.com/
+    * https://cookbook.openai.com/examples/orchestrating_agents
     * https://cookbook.openai.com/examples/gpt_with_vision_for_video_understanding
     * etc...
 

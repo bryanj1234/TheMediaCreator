@@ -45,24 +45,51 @@ openai_client = bloai.get_open_ai_client(OPENAI_api_key, OPENAI_org_id)
 
 # Get text from text ===========================================================
 
-context_list = [
-    "There is cat sitting on a windowsill, looking intently out the window. It is deeply engaged with what's going on outside.",
-    "The cat is white."
-]
+# context_list = [
+#     "There is cat sitting on a windowsill, looking intently out the window. It is deeply engaged with what's going on outside.",
+#     "The cat is white."
+# ]
+#
+# prompts_list = [
+#     "What color is the cat?",
+#     "Please come up with three or four plausible reasons that cat would be so focused on what's happening outside."
+# ]
+#
+# structured_output_class = blpands.GenericResponseStructure
+# prompt = blpands.generic_prompts_list_to_prompt(prompts_list, context_list)
+# print("====================================================================================")
+# print(prompt)
+# print("====================================================================================")
+# ret_vals = blt.get_text_from_text(prompt, structured_output_class, openai_client)
+# print("====================================================================================")
+# pprint(ret_vals)
+# print("====================================================================================")
 
-prompts_list = [
-    "What color is the cat?",
-    "Please come up with three or four plausible reasons that cat would be so focused on what's happening outside."
-]
+# Get speech from text ===========================================================
 
-structured_output_class = blpands.GenericResponseStructure
-prompt = blpands.generic_prompts_list_to_prompt(prompts_list, context_list)
-print("====================================================================================")
-print(prompt)
-print("====================================================================================")
-ret_vals = blt.get_text_from_text(prompt, structured_output_class, openai_client)
-print("====================================================================================")
-pprint(ret_vals)
-print("====================================================================================")
+tts_text = """
+Once upon a time, Leo the lion cub woke up to the smell of pancakes and scrambled eggs.
+His tummy rumbled with excitement as he raced to the kitchen. Mama Lion had made a breakfast feast!
+Leo gobbled up his pancakes, sipped his orange juice, and munched on some juicy berries.
+"""
 
-
+speech_file_path = "audio/tts_fast.mp3"
+completion = openai_client.chat.completions.create(
+    model="gpt-4o-audio-preview",
+    modalities=["text", "audio"],
+    audio={"voice": "alloy", "format": "mp3"},
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant that can generate audio from text. Speak in a British accent and speak really fast.",
+        },
+        {
+            "role": "user",
+            "content": tts_text,
+        }
+    ],
+)
+import base64
+mp3_bytes = base64.b64decode(completion.choices[0].message.audio.data)
+with open(speech_file_path, "wb") as f:
+    f.write(mp3_bytes)

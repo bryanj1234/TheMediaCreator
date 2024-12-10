@@ -5,7 +5,10 @@ See:
   * https://platform.openai.com/docs/guides/structured-outputs
   * https://cookbook.openai.com/
     * https://cookbook.openai.com/examples/orchestrating_agents
+    * https://cookbook.openai.com/examples/assistants_api_overview_python
+    * https://cookbook.openai.com/examples/enhance_your_prompts_with_meta_prompting
     * https://cookbook.openai.com/examples/gpt_with_vision_for_video_understanding
+    * https://cookbook.openai.com/examples/leveraging_model_distillation_to_fine-tune_a_model
     * etc...
 
 ## Goals
